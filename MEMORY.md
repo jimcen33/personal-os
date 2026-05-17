@@ -1,59 +1,57 @@
 ---
-last-updated: 2026-05-17
+last-updated: 2026-05-15
 ---
 
-# {{YOUR_NAME}}'s Personal OS Memory
-
-This file holds durable facts about you, your work, and your world that Cowork should remember across sessions. Add items as you go. Trim items when they go stale.
+# Jordan Rivera's Personal OS Memory
 
 ## Identity
 
-- Name: {{YOUR_NAME}}
-- Email: {{YOUR_EMAIL}}
-- Role / current focus: {{ONE_LINE_DESCRIPTION}}
-- Location / timezone: {{LOCATION_TZ}}
+- **Name:** Jordan Rivera
+- **Email:** jordan@threadweaver.dev
+- **Role:** Solo founder of Threadweaver; weekly newsletter writer at "Atomic Builder"
+- **Location:** Lisbon, Portugal (UTC+0, originally California)
+- **Pronouns:** they/them
 
 ## Active Projects
 
-> Replace the example below with your real active projects. Keep this short — 3–5 items max. Move stale ones to `00_Resources/log.md`.
-
-- **Example Project A** — one sentence on what it is and why it matters this quarter.
-- **Example Project B** — one sentence.
+- **Threadweaver v1.5** — adding LinkedIn-post output mode (was X-only at launch). Goal: ship to existing customers by 2026-06-01. ~140 paying customers, $2.3K MRR.
+- **Newsletter "Atomic Builder"** — weekly, 8.2K subs. Currently writing the indie-creator-to-product-builder series (4 of ~8 essays out).
+- **Pricing experiment** — testing $19/mo vs. $29/mo for new signups. Decision deadline 2026-05-30.
 
 ## Key Decisions
 
-> Decisions worth remembering with their reasoning. Format: `YYYY-MM-DD — what was decided — why`.
-
-- _(empty — add as decisions accumulate)_
+- **2026-04-28** — Pause YouTube. Posting weekly was eating 6 hrs/week and conversion to product was near zero. Reallocate to newsletter + product. Reasoning: newsletter converts at 1.4%, YT at 0.08%.
+- **2026-04-20** — Stick with Cloudflare D1, not migrate to Turso. D1 is good enough for current scale; migration cost not justified at <$10K MRR.
+- **2026-04-05** — Hire part-time front-end dev (Maya). 15 hrs/week. Designer (Tom) reduced from 10 hrs/week to 5 hrs/week.
 
 ## Recurring Workflows
 
-> Workflows you run on a cadence (weekly review, monthly close, quarterly plan). Cowork can refer to these when scheduling or prepping.
-
-- _(empty — populate from your real cadence)_
+- **Weekly (Mon)** — Newsletter draft (Writing HQ, 9-step workflow).
+- **Weekly (Tue)** — Customer interview x2 (Threadweaver users).
+- **Weekly (Fri)** — Metrics review + week-ahead plan.
+- **Monthly** — Pricing-experiment check-in.
+- **Quarterly** — Voice extract refresh.
 
 ## Contacts
 
-> Key people Cowork needs to recognize. Format: `Name — relationship — last touched YYYY-MM-DD`.
-
-- _(empty)_
+- **Maya Tan** — part-time front-end dev. Started 2026-04-08. Discord async; Tue/Thu sync calls. Strong on React + edge runtime.
+- **Tom Pereira** — designer (5 hrs/week). Figma. Slack DM. Last touched 2026-05-13.
+- **Lena K.** — Threadweaver power user, ~14K newsletter subs herself. Has given 4 founding-customer-quality feedback rounds. Last DM 2026-05-09.
+- **Ben Q.** — friend, runs a successful indie SaaS ($35K MRR). Sometimes pings on pricing / positioning. Last touched 2026-05-02.
 
 ## Tools & Accounts
 
-> The systems you use. Cowork uses this to decide which MCP / connector to reach for.
-
-- _(empty — list your stack: Notion / Linear / Gmail / Slack / etc.)_
+- **Threadweaver stack:** Cloudflare Workers, Hono, D1, htmx, Stripe, Resend.
+- **Newsletter:** Beehiiv.
+- **Customer ops:** Plain (support), Mixpanel (product analytics), Stripe (billing).
+- **Personal:** Apple Mail, iCloud sync, Cowork mode (Claude Code), Obsidian for browsing this wiki.
+- **Async with team:** Discord (Maya), Slack (Tom).
 
 ## Glossary / Shorthand
 
-> Acronyms, nicknames, project codenames. So Cowork doesn't ask "what's X?" every time.
-
-- _(empty)_
-
----
-
-## How to maintain this file
-
-- Whenever you say "remember this," Cowork appends here and confirms.
-- Every ~2 weeks, ask Cowork to lint MEMORY.md: archive stale items to `00_Resources/log.md`, dedupe entries.
-- This file is for **facts**, not rules. Rules go in `CLAUDE.md`.
+- **TW** — Threadweaver.
+- **AB** — Atomic Builder (the newsletter).
+- **AE** — Atomic Essay (the content pattern at the heart of AB).
+- **WS** — workstation.
+- **MMR** — Monthly Mean Retention (Jordan's internal retention metric).
+- **CIP** — Creator-to-Indie-Product (the meta-thesis I write about).
