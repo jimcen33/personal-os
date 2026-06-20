@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.3.0] — 2026-06-20
+
+### Added
+
+- **Loop guardrails** rule in `CLAUDE.md`: every autonomous/scheduled loop must enforce an iteration cap, no-progress detection, and a budget ceiling (default 3 rounds · 10 min · halt-on-zero-progress).
+- **Observability layer**: `00_Resources/run-log-spec.md` (one-JSONL-line-per-run schema) and a seeded `00_Resources/run-log.jsonl`. `/lint` reads the last ~14 days to flag silent runs, recurring errors, and escalation droughts.
+- **"Verify every number"** rule + `00_Resources/validation-prompts.md` (validation table, who-is-who / money-flow check, differentiated-outreach-angle check).
+- **Weekly behavior-taste loop**: the rule that `CLAUDE.md` / `MEMORY.md` / `voice-principles.md` are never auto-mutated mid-session; changes flow through the new `/weekly-taste-sync` skill, with `00_Resources/taste-sync-log.md` for rollback-rate calibration.
+- **Optional Council + Skeptic dissent layer**: `/skeptic` skill, `.claude/council/` (README + role `_template/CONTEXT.md`), and `docs/extending/council.md`.
+
+### Changed
+
+- `CLAUDE.md` skill table now lists all 17 shipped skills (previously omitted `humanizer` and `tutorial-generator`); added new `last-updated` of 2026-06-20.
+- `README.md`: corrected Status from v0.1 to v0.3.0, corrected the skill count, listed every shipped skill, and normalized the `{{YOUR_HANDLE}}` placeholder in the clone command.
+
+### Known gaps
+
+- Chinese (`*.zh-CN.md`) mirrors of the new docs and `CLAUDE.md` additions are **not yet translated** — tracked as a follow-up.
+
+---
+
 ## [0.2.0] — 2026-05-17
 
 ### Added

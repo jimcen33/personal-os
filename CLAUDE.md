@@ -1,5 +1,5 @@
 ---
-last-updated: 2026-05-17
+last-updated: 2026-06-20
 ---
 
 # {{YOUR_NAME}}'s Personal OS — Root Constitution
@@ -57,6 +57,10 @@ Replace this section with your own. Examples below — keep, change, or delete e
 - **Update `last-updated` on every edit.** When modifying any of these files, update the `last-updated` field in its frontmatter to today's date (YYYY-MM-DD): root `CLAUDE.md`, `MEMORY.md`, `AGENTS.md`, `00_Resources/voice-principles.md`, any workstation `CLAUDE.md` or `MEMORY.md`, and any `.claude/skills/*/SKILL.md`.
 - **Re-count from the source, never restate.** When summarizing counts in prose from a widget, list, or rendered artifact you just produced, re-count from that source rather than restating an earlier figure. Prose summaries drift; the rendered artifact is the source of truth.
 - **Execute every skill step explicitly. Never close a task you didn't actually run.** When running a multi-step skill, every step must be executed (or explicitly skipped with a stated reason). Do not mark a task complete unless the step actually ran.
+- **Verify every number before stating it.** When proposing a financial calculation or a time-to-X analysis, lay out the formula step by step (each fee, each discount, each year) and re-check the arithmetic before showing the answer. Don't write a stacked-percentage conclusion (e.g., "net +1.5% cashback") without listing every component that bears on it. Scope: applies to *stated conclusions* (cashback %, breakeven year, total cost, calendar dates), not to clearly directional back-of-envelope ranges. See `00_Resources/validation-prompts.md`.
+- **Behavior-taste loop runs weekly, not daily.** Do NOT auto-mutate `CLAUDE.md`, `MEMORY.md`, or `voice-principles.md` based on mid-session corrections. Cross-session behavior changes go through `/weekly-taste-sync` only — a once-a-week ritual that surfaces patches I approve explicitly. Rationale: daily taste loops over-fit to mood and to whatever I happened to say in one session.
+- **Loop guardrails on every autonomous loop.** Any skill or scheduled task that iterates unattended MUST enforce three hard stops before it runs: (1) **iteration cap** — a fixed maximum number of rounds; (2) **no-progress detection** — halt if a round produces zero new items/changes versus the previous round; (3) **budget ceiling** — a max wall-clock (and/or token/$) limit. Default caps where a skill doesn't specify its own: **3 rounds · 10 min · halt-on-zero-progress**. On any breach, HALT and append an escalation line to `00_Resources/run-log.jsonl` rather than continuing. Rationale: unguarded loops produce infinite loops and billing surprises.
+- **Every heavy skill and scheduled task appends one line to `run-log.jsonl`.** At the end of each run, append exactly one JSONL line per `00_Resources/run-log-spec.md` (skill, trigger, duration, items_in/out, escalations, errors, notes). This is the OS observability layer — `/lint` reads the last ~14 days to flag silent runs, recurring errors, and escalation droughts. Interactive one-shot skills (`/wiki`, `/new-info`) are exempt unless you want latency tracking.
 
 ---
 
@@ -174,6 +178,10 @@ These files in `00_Resources/` are loaded only when triggered, to keep token usa
 | `00_Resources/autoresearch-program.md` | Before running `/autoresearch`. Defines source preferences and constraints. |
 | `00_Resources/spotlight-rule.md` | The first time the Spotlight Rule fires in a session. Full rubric, anti-fatigue logic, calibration SOP. |
 | `00_Resources/spotlight-log.md` | Every spotlight gets appended here. Read at 30 entries to recalibrate the threshold. |
+| `00_Resources/validation-prompts.md` | Before delivering a financial conclusion, strategy recommendation, technical architecture proposal, or counterparty draft. The validation-table prompt. |
+| `00_Resources/run-log-spec.md` | Before wiring observability into a new skill, or when you need the exact `run-log.jsonl` line schema. |
+| `00_Resources/run-log.jsonl` | The observability log. `/lint` reads the last ~14 days to flag silent runs, recurring errors, and escalation droughts. |
+| `00_Resources/taste-sync-log.md` | Every `/weekly-taste-sync` run appends here. Read at month boundaries to recalibrate the score threshold via rollback rate. |
 | `00_Resources/cross-project-bridge.md` | I want to point another project at this wiki. |
 | `00_Resources/prompt-templates.md` | I want a copy-paste prompt for ingest, query, lint, promotion, or queue review. |
 
@@ -218,11 +226,22 @@ After creating the workstation, add a row to the **Routing Map** above and to `0
 
 ---
 
+## Council & Skeptic (optional)
+
+For high-leverage decisions, this template ships a structural dissent layer that breaks confirmation bias. It's **optional** — delete this section and `.claude/skills/skeptic/` if you don't want it.
+
+- **The Skeptic** (`/skeptic "<proposal>"`) returns 3 ranked failure modes, 1 contrarian alternative, 1 kill criterion, and 1 concession. Run it before any major decision (what to build, multi-week plans, cornerstone content, infra choices). Target accuracy is **40–50%** — if it agrees with you most of the time, it has become a yes-man; recalibrate.
+- **The Council** (optional, heavier) is a set of role-specialized context files (`.claude/council/<role>/CONTEXT.md`) that each act as a *lens*, not a yes-man. Load the relevant role, let it weigh in, then run the Skeptic before you decide. Setup and role templates: `docs/extending/council.md`.
+
+Both layers log to `00_Resources/council-log.md` (created on first use) for the accuracy calibration loop.
+
+---
+
 ## Cost Defaults
 
 - Default to Sonnet. 80% of tasks don't need Opus.
 - Switch to Opus only when the task has 3+ steps that all depend on each other (e.g., complex ingest with classification reasoning, lint with cross-file consistency analysis).
-- Keep this file under 300 lines. Point to resource files for detail; don't inline.
+- Keep this file focused. Point to resource files for detail; don't inline.
 
 ---
 
@@ -236,15 +255,19 @@ These live in `.claude/skills/<name>/SKILL.md`. Cowork loads them when a session
 | `/queue-review`, "review my queue" | `queue-review` | Lists Queue items expiring in next 7 days. For each: promote, extend, or let expire. |
 | `/queue-triage`, "triage my queue" | `queue-triage` | Full-queue triage. Scans every item, recommends action per item (PROMOTE / EXTEND / SPLIT / EXPIRE), generates dispatch lists, writes promote handoff. |
 | `/promote`, "promote this" | `promote` | Independent validator on a Queue item. **MUST run in a fresh session.** Outputs gate score + entity check + recommendation. |
-| `/lint <layer>`, "lint the wiki" | `lint` | Seven-check audit. Reports + drops callouts in conflicting pages. |
+| `/lint <layer>`, "lint the wiki" | `lint` | Seven-check audit. Reports + drops callouts in conflicting pages. Reads `run-log.jsonl` for silent-run / escalation-drought checks. |
 | `/wiki <question>`, "what do I know about X" | `wiki` | Search and answer with citations. Surfaces missing cross-links. |
 | `/hot-cache`, "wrap up" | `hot-cache` | Rewrites `00_Resources/hot.md` so the next session has full recent context. |
-| `/autoresearch <topic>`, "research X" | `autoresearch` | 3-round web research with gap-filling. Files results to Queue by default. |
+| `/autoresearch <topic>`, "research X" | `autoresearch` | 3-round web research with gap-filling. Files results to Queue by default. Enforces loop guardrails. |
 | `/voice-extract`, "refresh my voice" | `voice-extract` | Pulls writing patterns from sent emails or 5 samples. Updates `00_Resources/voice-principles.md`. |
 | `/new-info <topic>`, "what's the latest on X" | `new-info` | Real-Time UI & Info Verifier. Searches web for latest info, cross-verifies 2+ sources, refuses to hallucinate. |
 | `/session-audit`, "session audit" | `starter-session-audit` | End-of-session scan for unsaved corrections, preferences, and decisions. |
 | `/sync-tasks`, "sync my tasks" | `sync-tasks` | Detects drift between memory files and scheduled tasks. Proposes patches for approval — never auto-applies. |
 | `/connections`, "find connections" | `connections` | Scans recent Queue items + new Permanent pages for cross-idea connections, outputs brief seeds. Run weekly before a writing session. |
+| `/tutorial <topic>`, "make a tutorial" | `tutorial-generator` | Researches a topic and writes a step-by-step non-engineer guide. Saves to `Tutorials/`. |
+| `/humanizer`, "humanize this" | `humanizer` | Removes signs of AI-generated writing from a draft (inflated symbolism, em-dash overuse, rule-of-three, AI vocabulary, etc.). |
+| `/weekly-taste-sync`, "sync my taste" | `weekly-taste-sync` | Cross-session behavior-taste aggregator. Scans recent transcripts, extracts patches, runs the Skeptic, never auto-applies. Run once a week. Calibrates via rollback rate in `00_Resources/taste-sync-log.md`. |
+| `/skeptic`, "poke holes", "stress test this" | `skeptic` | The chartered dissent voice. Returns 3 ranked failure modes + 1 contrarian alternative + 1 kill criterion + 1 concession. Logs to `00_Resources/council-log.md`. |
 
 Cowork auto-matches `/<word>` typed in chat to the skill named `<word>`. The natural-language phrases work too — Cowork picks the right skill based on the description in each SKILL.md.
 
