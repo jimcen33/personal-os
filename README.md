@@ -18,11 +18,11 @@ It's the system **as a working artifact** — folder structure, skills, governan
 ## Quickstart (60 seconds)
 
 ```bash
-git clone https://github.com/{{your-handle}}/personal-os.git my-os
+git clone https://github.com/{{YOUR_HANDLE}}/personal-os.git my-os
 cd my-os
 
 # 1. Open the folder in Cowork mode (or Claude Code)
-# 2. Search & replace {{YOUR_NAME}}, {{YOUR_EMAIL}}, {{YOUR_DOMAIN}} across the repo
+# 2. Search & replace {{YOUR_NAME}}, {{YOUR_EMAIL}}, {{YOUR_DOMAIN}}, {{YOUR_HANDLE}} across the repo
 # 3. Edit the "Wiki Scope (declared)" section in CLAUDE.md
 # 4. Start a session and type: /voice-extract  (or paste 5 of your sent emails)
 # 5. Drop something in Notes/Inbox/ and type: /ingest
@@ -56,9 +56,10 @@ Read [ARCHITECTURE.md](ARCHITECTURE.md) for the full pipeline.
 | **Constitution** | `CLAUDE.md` (rules, routing, governance), `MEMORY.md` (durable facts), `AGENTS.md` (portable schema for any agent) |
 | **Five layers** | `Notes/`, `Knowledge/`, `Software/`, `LifeOS/`, `Writing/` |
 | **Workstations** | `Writing HQ/`, `Email HQ/`, `Tutorials/` — sub-systems with their own rules |
-| **Resources** | `00_Resources/` — voice principles, index, log, prompt templates, spotlight log |
-| **Skills** | ~17 slash-commands in `.claude/skills/`: `ingest`, `queue-review`, `queue-triage`, `promote`, `lint`, `wiki`, `hot-cache`, `autoresearch`, `voice-extract`, `connections`, `new-info`, `sync-tasks`, `humanizer`, and others |
-| **Docs** | `ARCHITECTURE.md`, `DECISIONS.md`, `docs/` deep dives |
+| **Resources** | `00_Resources/` — voice principles, index, log, prompt templates, spotlight log, validation prompts, run-log spec, taste-sync log |
+| **Skills** | 17 slash-commands in `.claude/skills/`: `ingest`, `queue-review`, `queue-triage`, `promote`, `lint`, `wiki`, `hot-cache`, `autoresearch`, `voice-extract`, `connections`, `new-info`, `sync-tasks`, `starter-session-audit`, `tutorial-generator`, `humanizer`, `weekly-taste-sync`, `skeptic` |
+| **Governance** | Quality Gate, Spotlight Rule, Disposable Noise list, declared Wiki Scope — plus loop guardrails, `run-log.jsonl` observability, a weekly behavior-taste loop, and an optional Council + Skeptic dissent layer |
+| **Docs** | `ARCHITECTURE.md`, `DECISIONS.md`, `docs/` deep dives (incl. `docs/extending/council.md`) |
 
 ---
 
@@ -82,9 +83,9 @@ The trade-off: it's opinionated. Quality Gate, Spotlight Rule, Disposable Noise 
 
 ## Status
 
-**v0.1 — usable, opinionated, evolving.**
+**v0.3.0 — usable, opinionated, evolving.**
 
-I run a version of this every day. This is the public, sanitized, single-vault edition. The multi-vault extension (company-wiki + private-wiki + cross-vault routing) is documented in [docs/extending/multi-vault.md](docs/extending/multi-vault.md) for when you outgrow the single-vault setup.
+I run a version of this every day. This is the public, sanitized, single-vault edition. The multi-vault extension (company-wiki + private-wiki + cross-vault routing) is documented in [docs/extending/multi-vault.md](docs/extending/multi-vault.md) for when you outgrow the single-vault setup. See [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ---
 
